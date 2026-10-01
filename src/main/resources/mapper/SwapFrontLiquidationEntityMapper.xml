@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SwapFrontLiquidationEntityMapper">
+  <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SwapFrontLiquidationEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="tenant_id" jdbcType="BIGINT" property="tenantId" />
+    <result column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="instrument_price" jdbcType="DECIMAL" property="instrumentPrice" />
+    <result column="final_interest" jdbcType="DECIMAL" property="finalInterest" />
+    <result column="adjust_value" jdbcType="DECIMAL" property="adjustValue" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from swap_front_liquidation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.novax.entity.mysql.SwapFrontLiquidationEntity">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into swap_front_liquidation (tenant_id, order_id, user_id, 
+      instrument_price, final_interest, adjust_value, 
+      create_time)
+    values (#{tenantId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{instrumentPrice,jdbcType=DECIMAL}, #{finalInterest,jdbcType=DECIMAL}, #{adjustValue,jdbcType=DECIMAL}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SwapFrontLiquidationEntity">
+    update swap_front_liquidation
+    set tenant_id = #{tenantId,jdbcType=BIGINT},
+      order_id = #{orderId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      instrument_price = #{instrumentPrice,jdbcType=DECIMAL},
+      final_interest = #{finalInterest,jdbcType=DECIMAL},
+      adjust_value = #{adjustValue,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, tenant_id, order_id, user_id, instrument_price, final_interest, adjust_value, 
+    create_time
+    from swap_front_liquidation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, tenant_id, order_id, user_id, instrument_price, final_interest, adjust_value, 
+    create_time
+    from swap_front_liquidation
+  </select>
+</mapper>

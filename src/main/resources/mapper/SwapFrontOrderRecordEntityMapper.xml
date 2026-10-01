@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SwapFrontOrderRecordEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SwapFrontOrderRecordEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="order_opposite_id" jdbcType="BIGINT" property="orderOppositeId"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType"/>
+        <result column="mode" jdbcType="INTEGER" property="mode"/>
+        <result column="leverage" jdbcType="INTEGER" property="leverage"/>
+        <result column="trade_price" jdbcType="DECIMAL" property="tradePrice"/>
+        <result column="trade_volume" jdbcType="BIGINT" property="tradeVolume"/>
+        <result column="profit" jdbcType="DECIMAL" property="profit"/>
+        <result column="fee" jdbcType="DECIMAL" property="fee"/>
+        <result column="role" jdbcType="INTEGER" property="role"/>
+        <result column="fee_currency" jdbcType="VARCHAR" property="feeCurrency"/>
+        <result column="source" jdbcType="TINYINT" property="source"/>
+        <result column="source_id" jdbcType="BIGINT" property="sourceId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from swap_front_order_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.SwapFrontOrderRecordEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into swap_front_order_record (tenant_id, user_id, order_id,
+        order_opposite_id, symbol, trade_type,
+        mode, leverage, trade_price,
+        trade_volume, profit, fee,
+        role, fee_currency, source,
+        source_id, status, create_time
+        )
+        values (#{tenantId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT},
+        #{orderOppositeId,jdbcType=BIGINT}, #{symbol,jdbcType=VARCHAR}, #{tradeType,jdbcType=INTEGER},
+        #{mode,jdbcType=INTEGER}, #{leverage,jdbcType=INTEGER}, #{tradePrice,jdbcType=DECIMAL},
+        #{tradeVolume,jdbcType=BIGINT}, #{profit,jdbcType=DECIMAL}, #{fee,jdbcType=DECIMAL},
+        #{role,jdbcType=INTEGER}, #{feeCurrency,jdbcType=VARCHAR}, #{source,jdbcType=TINYINT},
+        #{sourceId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SwapFrontOrderRecordEntity">
+        update swap_front_order_record
+        set tenant_id = #{tenantId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+        order_id = #{orderId,jdbcType=BIGINT},
+        order_opposite_id = #{orderOppositeId,jdbcType=BIGINT},
+        symbol = #{symbol,jdbcType=VARCHAR},
+        trade_type = #{tradeType,jdbcType=INTEGER},
+        mode = #{mode,jdbcType=INTEGER},
+        leverage = #{leverage,jdbcType=INTEGER},
+        trade_price = #{tradePrice,jdbcType=DECIMAL},
+        trade_volume = #{tradeVolume,jdbcType=BIGINT},
+        profit = #{profit,jdbcType=DECIMAL},
+        fee = #{fee,jdbcType=DECIMAL},
+        role = #{role,jdbcType=INTEGER},
+        fee_currency = #{feeCurrency,jdbcType=VARCHAR},
+        source = #{source,jdbcType=TINYINT},
+        source_id = #{sourceId,jdbcType=BIGINT},
+        status = #{status,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_id, order_opposite_id, symbol, trade_type, mode,
+        leverage, trade_price, trade_volume, profit, fee, role, fee_currency, source, source_id,
+        status, create_time
+        from swap_front_order_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_id, order_opposite_id, symbol, trade_type, mode,
+        leverage, trade_price, trade_volume, profit, fee, role, fee_currency, source, source_id,
+        status, create_time
+        from swap_front_order_record
+    </select>
+    <!--    status1:正常数据2:机器人刷的数据   -->
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        select * from swap_front_order_record
+        where order_id = #{orderId,jdbcType=BIGINT}
+        and status = 1
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select * from swap_front_order_record
+        where user_id = #{userId,jdbcType=BIGINT}
+        and status = 1
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectPeriodTransactions" resultMap="BaseResultMap">
+        select * from swap_front_order_record
+        where user_id = #{userId,jdbcType=BIGINT}
+        and create_time >= #{createTime,jdbcType=TIMESTAMP}
+        and status = 1
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectTodayRecords" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_record
+        where DATE(CONVERT_TZ(create_time, '+08:00', '+00:00')) = DATE(CONVERT_TZ(NOW(), '+08:00', '+00:00'))
+        AND user_id = #{userId,jdbcType=BIGINT}
+    </select>
+</mapper>

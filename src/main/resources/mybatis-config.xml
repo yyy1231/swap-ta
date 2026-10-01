@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--    <properties resource="application_dev.properties"/>-->
+    <properties resource="application_test.properties"/>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.user}"/>
+                <property name="password" value="${jdbc.password}"/>
+                <!-- 强迫检查连接是否可用，防止 Communications link failure -->
+                <property name="poolPingEnabled" value="true"/>
+                <property name="poolPingQuery" value="SELECT 1"/>
+                <!-- 每次获取连接均执行 ping，彻底根除连接断开问题 -->
+                <property name="poolPingConnectionsNotUsedFor" value="0"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mapper/SwapFrontConfigEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontFinanceRecordEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontFundsRateEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontLiquidationEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontOrderEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontOrderPlanEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontOrderRecordEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontPositionEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontUserAssetsEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontUserConfigEntityMapper.xml"/>
+        <mapper resource="mapper/SwapFrontUserLeverageEntityMapper.xml"/>
+        <mapper resource="mapper/SwapMarginEntityMapper.xml"/>
+        <mapper resource="mapper/SwapPositionFactorEntityMapper.xml"/>
+        <mapper resource="mapper/SwapStopProfitLossEntityMapper.xml"/>
+        <mapper resource="mapper/UserEntityMapper.xml"/>
+        <mapper resource="mapper/VipLevelUpMapper.xml"/>
+        <mapper resource="mapper/VipLevelConfigMapper.xml"/>
+    </mappers>
+</configuration>

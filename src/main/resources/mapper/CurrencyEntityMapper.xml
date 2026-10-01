@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.CurrencyEntityMapper">
+  <resultMap id="BaseResultMap" type="com.novax.entity.mysql.CurrencyEntity">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="currency" jdbcType="VARCHAR" property="currency" />
+    <result column="chinese_name" jdbcType="VARCHAR" property="chineseName" />
+    <result column="english_name" jdbcType="VARCHAR" property="englishName" />
+    <result column="imgs" jdbcType="VARCHAR" property="imgs" />
+    <result column="property_decimal" jdbcType="INTEGER" property="propertyDecimal" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="inflow_type" jdbcType="INTEGER" property="inflowType" />
+    <result column="outflow_type" jdbcType="INTEGER" property="outflowType" />
+    <result column="module" jdbcType="INTEGER" property="module" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="is_platform" jdbcType="INTEGER" property="isPlatform" />
+    <result column="is_finance" jdbcType="INTEGER" property="isFinance" />
+    <result column="is_hidden" jdbcType="INTEGER" property="isHidden" />
+    <result column="is_rank" jdbcType="INTEGER" property="isRank" />
+    <result column="referrer" jdbcType="VARCHAR" property="referrer" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from currency
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.novax.entity.mysql.CurrencyEntity">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into currency (currency, chinese_name, english_name, 
+      imgs, property_decimal, sort, 
+      inflow_type, outflow_type, module, 
+      status, is_platform, is_finance, 
+      is_hidden, is_rank, referrer, 
+      create_time, update_time)
+    values (#{currency,jdbcType=VARCHAR}, #{chineseName,jdbcType=VARCHAR}, #{englishName,jdbcType=VARCHAR}, 
+      #{imgs,jdbcType=VARCHAR}, #{propertyDecimal,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{inflowType,jdbcType=INTEGER}, #{outflowType,jdbcType=INTEGER}, #{module,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{isPlatform,jdbcType=INTEGER}, #{isFinance,jdbcType=INTEGER}, 
+      #{isHidden,jdbcType=INTEGER}, #{isRank,jdbcType=INTEGER}, #{referrer,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.CurrencyEntity">
+    update currency
+    set currency = #{currency,jdbcType=VARCHAR},
+      chinese_name = #{chineseName,jdbcType=VARCHAR},
+      english_name = #{englishName,jdbcType=VARCHAR},
+      imgs = #{imgs,jdbcType=VARCHAR},
+      property_decimal = #{propertyDecimal,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      inflow_type = #{inflowType,jdbcType=INTEGER},
+      outflow_type = #{outflowType,jdbcType=INTEGER},
+      module = #{module,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      is_platform = #{isPlatform,jdbcType=INTEGER},
+      is_finance = #{isFinance,jdbcType=INTEGER},
+      is_hidden = #{isHidden,jdbcType=INTEGER},
+      is_rank = #{isRank,jdbcType=INTEGER},
+      referrer = #{referrer,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select id, currency, chinese_name, english_name, imgs, property_decimal, sort, inflow_type, 
+    outflow_type, module, status, is_platform, is_finance, is_hidden, is_rank, referrer, 
+    create_time, update_time
+    from currency
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, currency, chinese_name, english_name, imgs, property_decimal, sort, inflow_type, 
+    outflow_type, module, status, is_platform, is_finance, is_hidden, is_rank, referrer, 
+    create_time, update_time
+    from currency
+  </select>
+</mapper>

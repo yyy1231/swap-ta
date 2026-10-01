@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SwapStopProfitLossEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SwapStopProfitLossEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType"/>
+        <result column="trigger_price_profit" jdbcType="DECIMAL" property="triggerPriceProfit"/>
+        <result column="order_price_profit" jdbcType="DECIMAL" property="orderPriceProfit"/>
+        <result column="trigger_price_loss" jdbcType="DECIMAL" property="triggerPriceLoss"/>
+        <result column="order_price_loss" jdbcType="DECIMAL" property="orderPriceLoss"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from swap_stop_profit_loss
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.SwapStopProfitLossEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into swap_stop_profit_loss (user_id, order_id, trade_type,
+        trigger_price_profit, order_price_profit, trigger_price_loss,
+        order_price_loss, state, create_time,
+        update_time)
+        values (#{userId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{tradeType,jdbcType=INTEGER},
+        #{triggerPriceProfit,jdbcType=DECIMAL}, #{orderPriceProfit,jdbcType=DECIMAL},
+        #{triggerPriceLoss,jdbcType=DECIMAL},
+        #{orderPriceLoss,jdbcType=DECIMAL}, #{state,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SwapStopProfitLossEntity">
+        update swap_stop_profit_loss
+        set user_id = #{userId,jdbcType=BIGINT},
+        order_id = #{orderId,jdbcType=BIGINT},
+        trade_type = #{tradeType,jdbcType=INTEGER},
+        trigger_price_profit = #{triggerPriceProfit,jdbcType=DECIMAL},
+        order_price_profit = #{orderPriceProfit,jdbcType=DECIMAL},
+        trigger_price_loss = #{triggerPriceLoss,jdbcType=DECIMAL},
+        order_price_loss = #{orderPriceLoss,jdbcType=DECIMAL},
+        state = #{state,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, user_id, order_id, trade_type, trigger_price_profit, order_price_profit,
+        trigger_price_loss, order_price_loss, state, create_time, update_time
+        from swap_stop_profit_loss
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, user_id, order_id, trade_type, trigger_price_profit, order_price_profit,
+        trigger_price_loss, order_price_loss, state, create_time, update_time
+        from swap_stop_profit_loss
+    </select>
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        SELECT * FROM swap_stop_profit_loss
+        WHERE order_id = #{orderId,jdbcType=BIGINT}
+    </select>
+</mapper>

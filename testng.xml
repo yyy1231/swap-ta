@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite verbose="5" name="swap">
+    <groups>
+        <run>
+            <include name="smokeTest"/>
+            <include name="traderReady"/>
+        </run>
+    </groups>
+
+    <test name="swapsTrading" enabled="true">
+        <!--用于修改用户合约配置、计划单触发、爆仓场景的测试-->
+        <parameter name="trader-num" value="3"/>
+        <!--用于全仓模式下交易下单、计划单场景的测试-->
+        <parameter name="traderOfCross-num" value="15"/>
+        <!--用于逐仓模式下交易下单、计划单场景的测试-->
+        <parameter name="traderOfIsolated-num" value="3"/>
+        <!--用于分仓模式下交易下单、计划单场景的测试-->
+        <parameter name="traderOfSplit-num" value="9"/>
+        <groups>
+            <dependencies>
+                <group name="smokeTest" depends-on="traderReady"/>
+            </dependencies>
+        </groups>
+        <classes>
+            <!--前置-数据准备-->
+            <!--生成交易员-->
+            <class name="com.novax.testcase.GenerateUserTest">
+                <methods>
+                    <include name="traderReady"/>
+                    <include name="traderOfCrossReady"/>
+                    <include name="traderOfIsolatedReady"/>
+                    <include name="traderOfSplitReady"/>
+                </methods>
+            </class>
+
+            <!--订单(5)-->
+            <!--提交订单-->
+            <!--POST/swap/order-->
+            <!--开仓-->
+            <class name="com.novax.testcase.order.OpenPositionOfCrossTest">
+                <methods>
+                    <!--                    <include name="a_traderReady"/>-->
+                    <include name="openOrder_Success_Test"/>
+                    <include name="openOrder_Success_Test1"/>
+                    <include name="openOrder_Success_Test2"/>
+                    <include name="openOrder_Success_Test3"/>
+                    <include name="openOrder_Success_Test4"/>
+                    <include name="openOrder_Success_Test5"/>
+                    <include name="openOrder_Success_Test6"/>
+                    <include name="openOrder_Success_Test7"/>
+                    <include name="openOrder_Success_Test8"/>
+                    <include name="openOrder_Success_Test9"/>
+                    <include name="openLimitOrder_Success_Test"/>
+                    <include name="openOrder_TakeProfitStopLoss_Success_Test"/>
+                    <include name="openOrder_FeeWithEt_Success_Test"/>
+                </methods>
+            </class>
+            <class name="com.novax.testcase.order.OpenPositionOfIsolatedTest">
+                <methods>
+                    <!--                    <include name="a_traderReady"/>-->
+                    <include name="openOrder_Success_Test"/>
+                </methods>
+            </class>
+            <class name="com.novax.testcase.order.OpenPositionOfSplitTest">
+                <methods>
+                    <!--                    <include name="a_traderReady"/>-->
+                    <include name="openOrder_Success_Test"/>
+                    <include name="openOrder_Success_Test1"/>
+                    <include name="openOrder_Success_Test2"/>
+                    <include name="openOrder_Success_Test3"/>
+                    <include name="openOrder_Success_Test4"/>
+                    <include name="openLimitOrder_Success_Test"/>
+                    <include name="openOrder_TakeProfitStopLoss_Success_Test"/>
+                </methods>
+            </class>
+            <!--撤销订单-->
+            <!--POST/swap/order/repeal-->
+            <class name="com.novax.testcase.order.CancelOrderTest"/>
+            <!--查询订单-->
+            <!--GET/swap/order-->
+            <class name="com.novax.testcase.order.QueryOrderListTest"/>
+            <!--撤销全部订单-->
+            <!--POST/swap/order/repeal-all-->
+            <class name="com.novax.testcase.order.CancelAllOrdersTest"/>
+            <!--获取订单止盈止损详情-->
+            <!--GET/v3/stop/profit/loss-->
+            <class name="com.novax.testcase.order.QueryOrderTakeProfitStopLossDetailTest"/>
+            <!--提交订单-->
+            <!--POST/swap/order-->
+            <!--平仓-->
+            <class name="com.novax.testcase.order.ClosePositionOfCrossTest">
+                <methods>
+                    <include name="closePositions_Success_Test"/>
+                </methods>
+            </class>
+            <class name="com.novax.testcase.order.ClosePositionOfIsolatedTest">
+                <methods>
+                    <include name="closePositions_Success_Test"/>
+                </methods>
+            </class>
+            <class name="com.novax.testcase.order.ClosePositionOfSplitTest">
+                <methods>
+                    <include name="closePositions_Success_Test"/>
+                </methods>
+            </class>
+
+            <!--计划单(4)-->
+            <!--提交计划委托-->
+            <!--POST/swap/plan/order-->
+            <!--开仓-->
+            <class name="com.novax.testcase.order.OpenPlanOrderOfCrossTest"/>
+            <class name="com.novax.testcase.order.OpenPlanOrderOfIsolatedTest"/>
+            <class name="com.novax.testcase.order.OpenPlanOrderOfSplitTest"/>
+            <!--平仓-->
+            <class name="com.novax.testcase.order.ClosePlanOrderOfCrossTest"/>
+            <class name="com.novax.testcase.order.ClosePlanOrderOfIsolatedTest"/>
+            <class name="com.novax.testcase.order.ClosePlanOrderOfSplitTest"/>
+            <!--撤销计划委托-->
+            <!--POST/swap/plan/order/repeal-->
+            <class name="com.novax.testcase.order.CancelPlanOrderTest"/>
+            <!--查询计划单-->
+            <!--GET/swap/plan/order-->
+            <class name="com.novax.testcase.order.QueryPlanOrderListTest"/>
+            <!--撤销全部计划委托-->
+            <!--POST/swap/plan/order/repeal-all-->
+            <class name="com.novax.testcase.order.CancelAllPlanOrdersTest"/>
+
+            <!--持仓(4)-->
+            <!--逐仓追加/减少保证金-->
+            <!--POST/swap/position/margin-->
+            <class name="com.novax.testcase.position.AdjustMarginOfIsolatedPositionTest"/>
+            <!--用户持仓信息-->
+            <!--GET/swap/position-->
+            <class name="com.novax.testcase.position.QueryUserSymbolPositionsTest"/>
+            <!--用户全部持仓信息-->
+            <!--GET/swap/position/all-->
+            <class name="com.novax.testcase.position.QueryUserPositionsTest"/>
+            <!--合约分享页信息-->
+            <!--GET/swap/position/share-page-->
+            <class name="com.novax.testcase.position.SwapShareInfoTest"/>
+
+            <!--订单成交记录(3)-->
+            <!--查询订单成交记录-->
+            <!--GET/swap/order/record-->
+            <class name="com.novax.testcase.order.QueryOrderTransactionRecordsTest"/>
+            <!--合约单个委托成交记录-->
+            <!--GET/swap/order/detail-->
+            <class name="com.novax.testcase.order.QueryOrderTransactionDetailTest"/>
+            <!--GET/swap/order/order-detail-->
+            <class name="com.novax.testcase.order.QueryOrderTransactionDetail2Test"/>
+            <!--查询用户合约的交易量-->
+            <!--GET/swap/count-->
+            <class name="com.novax.testcase.order.QueryOrderTransactionCountsTest"/>
+
+            <!--财务记录（1）-->
+            <!--查询财务记录-->
+            <!--GET/swap/finance/record-->
+            <class name="com.novax.testcase.order.QueryFinanceRecordsTest"/>
+
+            <!--合约资产(4)-->
+            <!--查询交易页用户可划转资产-->
+            <!--GET/swap/transfer/balance-->
+            <class name="com.novax.testcase.assets.QueryUserTransferableAssetsTest"/>
+            <!--用户合约资产查询-->
+            <!--GET/swap/assets-->
+            <class name="com.novax.testcase.assets.QueryUserSwapAssetsTest"/>
+            <!--可划转资产列表查询-->
+            <!--GET/swap/asset/all-->
+            <class name="com.novax.testcase.assets.QueryTransferableAssetListTest"/>
+            <!--查询用户该市场可交易资产-->
+            <!--GET/swap/balance-->
+            <class name="com.novax.testcase.assets.QueryUserTradableAssetsTest"/>
+
+            <!--资金费率(2)-->
+            <!--资金费率-->
+            <!--GET/swap/information/funds-rate-page-->
+            <class name="com.novax.testcase.config.QueryFundsRateTest"/>
+            <!--资金费率折线图-->
+            <!--GET/swap/information/funds-rate-->
+            <class name="com.novax.testcase.config.QueryFundsRateChartTest"/>
+
+            <!--合约配置(6)-->
+            <!--设置用户合约杠杆倍数-->
+            <!--POST/front/swap/user/leverage-->
+            <class name="com.novax.testcase.config.UpdateUserLeverageTest"/>
+            <!--设置用户合约保证金模式-->
+            <!--POST/front/swap/user/mode-->
+            <class name="com.novax.testcase.config.UpdateUserModeTest"/>
+            <!--查询用户合约配置-->
+            <!--GET/v3/user/symbol/config-->
+            <class name="com.novax.testcase.config.QueryUserSwapConfigTest"/>
+            <!--查询合约交易市场配置-->
+            <!--GET/front/swap-->
+            <class name="com.novax.testcase.config.QuerySwapConfigTest"/>
+            <!--查询合约市场指定币对配置-->
+            <!--GET/front/swapConfig/{symbol}-->
+            <class name="com.novax.testcase.config.QuerySymbolConfigTest"/>
+            <!--获取配置了最大杠杆倍数的币对-->
+            <!--GET/public/v3/maxleverage/symbol-->
+            <class name="com.novax.testcase.config.QueryMaxLeverageSymbolsTest"/>
+
+            <!--合约计算器(7)-->
+            <!--强平价格-单向持仓-->
+            <!--POST/calc/public/strong-price-->
+            <class name="com.novax.testcase.calculator.LiquidationPriceOfOneWayPositionTest"/>
+            <!--强平价格-双向持仓-->
+            <!--POST/calc/public/double-strong-price-->
+            <class name="com.novax.testcase.calculator.LiquidationPriceOfTwoWayPositionTest"/>
+            <!--开仓均价-->
+            <!--POST/calc/public/average-price-->
+            <class name="com.novax.testcase.calculator.AveragePriceOfOpenPositionTest"/>
+            <!--收益-->
+            <!--GET/calc/public/incom-->
+            <class name="com.novax.testcase.calculator.IncomeTest"/>
+            <!--平仓价格-收益-->
+            <!--GET/calc/public/close-price-->
+            <class name="com.novax.testcase.calculator.ClosePositionPriceForIncomeTest"/>
+            <!--平仓价格-收益率-->
+            <!--GET/calc/public/close-pri-->
+            <class name="com.novax.testcase.calculator.ClosePositionPriceForIncomeRateTest"/>
+            <!--头寸计算-->
+            <!--GET/calc/public/posit-calculi-->
+            <class name="com.novax.testcase.calculator.PositionCalculateTest"/>
+
+            <!--爆仓场景-->
+            <!--避免影响测试小伙伴功能测试，选择小币种市场验证爆仓场景-->
+            <class name="com.novax.testcase.other.LiquidationTest">
+                <methods>
+                    <include name="ready"/>
+                    <include name="openOrder_Success_Test"/>
+                    <include name="liquidation_Success_Test"/>
+                </methods>
+            </class>
+            <!--计划单触发场景-->
+            <class name="com.novax.testcase.other.PlanOrderTriggerTest">
+                <methods>
+                    <include name="ready"/>
+                    <include name="planOrder_open_Success_Test"/>
+                    <include name="planOrder_trigger_Success_Test"/>
+                </methods>
+            </class>
+
+            <!--测试数据清理 撤销交易中订单 撤销计划委托单 平掉仓位-->
+            <class name="com.novax.testcase.DataCleanTest">
+                <methods>
+                    <include name="cancelAllOrders_Test"/>
+                    <include name="cancelAllPlanOrders_Test"/>
+                    <include name="closePositions_Test"/>
+                    <!--                    <include name="cleanRedisPositions"/>-->
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <listeners>
+        <!--实现的监听接口-->
+        <listener class-name="com.novax.util.RetryListener"/>
+        <!--Allure 参数名重命名：将 arg0-argN 映射为业务名称-->
+        <listener class-name="com.novax.util.AllureParamRenamer"/>
+        <!--Allure 动态用例名称：从 DataProvider 参数中提取 tcName_tcNum_tcDescp 更新报告展示名-->
+        <listener class-name="com.novax.util.AllureTestNameListener"/>
+    </listeners>
+</suite>

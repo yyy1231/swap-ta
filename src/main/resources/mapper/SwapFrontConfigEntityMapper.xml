@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SwapFrontConfigEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SwapFrontConfigEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="base_currency" jdbcType="VARCHAR" property="baseCurrency"/>
+        <result column="quote_currency" jdbcType="VARCHAR" property="quoteCurrency"/>
+        <result column="settlement_currency" jdbcType="VARCHAR" property="settlementCurrency"/>
+        <result column="contract_size" jdbcType="DECIMAL" property="contractSize"/>
+        <result column="price_tick" jdbcType="DECIMAL" property="priceTick"/>
+        <result column="size_tick" jdbcType="INTEGER" property="sizeTick"/>
+        <result column="min_volume" jdbcType="BIGINT" property="minVolume"/>
+        <result column="max_volume" jdbcType="BIGINT" property="maxVolume"/>
+        <result column="min_leverage" jdbcType="INTEGER" property="minLeverage"/>
+        <result column="max_leverage" jdbcType="INTEGER" property="maxLeverage"/>
+        <result column="market_ratio_buy" jdbcType="DECIMAL" property="marketRatioBuy"/>
+        <result column="market_ratio_sell" jdbcType="DECIMAL" property="marketRatioSell"/>
+        <result column="limit_ratio" jdbcType="DECIMAL" property="limitRatio"/>
+        <result column="ratio" jdbcType="DECIMAL" property="ratio"/>
+        <result column="imgs" jdbcType="VARCHAR" property="imgs"/>
+        <result column="tolerate_volume" jdbcType="BIGINT" property="tolerateVolume"/>
+        <result column="buy_volume" jdbcType="BIGINT" property="buyVolume"/>
+        <result column="sell_volume" jdbcType="BIGINT" property="sellVolume"/>
+        <result column="funding_time" jdbcType="INTEGER" property="fundingTime"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="open_time" jdbcType="TIMESTAMP" property="openTime"/>
+        <result column="is_open" jdbcType="INTEGER" property="isOpen"/>
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="is_delisting" jdbcType="INTEGER" property="isDelisting"/>
+        <result column="delisting_time" jdbcType="TIMESTAMP" property="delistingTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <association property="currencyEntity" javaType="com.novax.entity.mysql.CurrencyEntity">
+            <id column="id" jdbcType="BIGINT" property="id" />
+            <result column="currency" jdbcType="VARCHAR" property="currency" />
+            <result column="chinese_name" jdbcType="VARCHAR" property="chineseName" />
+            <result column="english_name" jdbcType="VARCHAR" property="englishName" />
+            <result column="imgs" jdbcType="VARCHAR" property="imgs" />
+            <result column="property_decimal" jdbcType="INTEGER" property="propertyDecimal" />
+            <result column="sort" jdbcType="INTEGER" property="sort" />
+            <result column="inflow_type" jdbcType="INTEGER" property="inflowType" />
+            <result column="outflow_type" jdbcType="INTEGER" property="outflowType" />
+            <result column="module" jdbcType="INTEGER" property="module" />
+            <result column="status" jdbcType="INTEGER" property="status" />
+            <result column="is_platform" jdbcType="INTEGER" property="isPlatform" />
+            <result column="is_finance" jdbcType="INTEGER" property="isFinance" />
+            <result column="is_hidden" jdbcType="INTEGER" property="isHidden" />
+            <result column="is_rank" jdbcType="INTEGER" property="isRank" />
+            <result column="referrer" jdbcType="VARCHAR" property="referrer" />
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+            <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        </association>
+    </resultMap>
+    <resultMap id="ResultMap" type="com.novax.entity.mysql.CurrencyEntity">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="currency" jdbcType="VARCHAR" property="currency" />
+        <result column="chinese_name" jdbcType="VARCHAR" property="chineseName" />
+        <result column="english_name" jdbcType="VARCHAR" property="englishName" />
+        <result column="imgs" jdbcType="VARCHAR" property="imgs" />
+        <result column="property_decimal" jdbcType="INTEGER" property="propertyDecimal" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="inflow_type" jdbcType="INTEGER" property="inflowType" />
+        <result column="outflow_type" jdbcType="INTEGER" property="outflowType" />
+        <result column="module" jdbcType="INTEGER" property="module" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="is_platform" jdbcType="INTEGER" property="isPlatform" />
+        <result column="is_finance" jdbcType="INTEGER" property="isFinance" />
+        <result column="is_hidden" jdbcType="INTEGER" property="isHidden" />
+        <result column="is_rank" jdbcType="INTEGER" property="isRank" />
+        <result column="referrer" jdbcType="VARCHAR" property="referrer" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from swap_front_config
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.SwapFrontConfigEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into swap_front_config (tenant_id, symbol, base_currency,
+        quote_currency, settlement_currency, contract_size,
+        price_tick, size_tick, min_volume,
+        max_volume, min_leverage, max_leverage,
+        market_ratio_buy, market_ratio_sell, limit_ratio,
+        ratio, imgs, tolerate_volume,
+        buy_volume, sell_volume, funding_time,
+        sort, open_time, is_open,
+        trade_type, status, is_delisting,
+        delisting_time, create_time, update_time
+        )
+        values (#{tenantId,jdbcType=BIGINT}, #{symbol,jdbcType=VARCHAR}, #{baseCurrency,jdbcType=VARCHAR},
+        #{quoteCurrency,jdbcType=VARCHAR}, #{settlementCurrency,jdbcType=VARCHAR}, #{contractSize,jdbcType=DECIMAL},
+        #{priceTick,jdbcType=DECIMAL}, #{sizeTick,jdbcType=INTEGER}, #{minVolume,jdbcType=BIGINT},
+        #{maxVolume,jdbcType=BIGINT}, #{minLeverage,jdbcType=INTEGER}, #{maxLeverage,jdbcType=INTEGER},
+        #{marketRatioBuy,jdbcType=DECIMAL}, #{marketRatioSell,jdbcType=DECIMAL}, #{limitRatio,jdbcType=DECIMAL},
+        #{ratio,jdbcType=DECIMAL}, #{imgs,jdbcType=VARCHAR}, #{tolerateVolume,jdbcType=BIGINT},
+        #{buyVolume,jdbcType=BIGINT}, #{sellVolume,jdbcType=BIGINT}, #{fundingTime,jdbcType=INTEGER},
+        #{sort,jdbcType=INTEGER}, #{openTime,jdbcType=TIMESTAMP}, #{isOpen,jdbcType=INTEGER},
+        #{tradeType,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{isDelisting,jdbcType=INTEGER},
+        #{delistingTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SwapFrontConfigEntity">
+        update swap_front_config
+        set tenant_id = #{tenantId,jdbcType=BIGINT},
+        symbol = #{symbol,jdbcType=VARCHAR},
+        base_currency = #{baseCurrency,jdbcType=VARCHAR},
+        quote_currency = #{quoteCurrency,jdbcType=VARCHAR},
+        settlement_currency = #{settlementCurrency,jdbcType=VARCHAR},
+        contract_size = #{contractSize,jdbcType=DECIMAL},
+        price_tick = #{priceTick,jdbcType=DECIMAL},
+        size_tick = #{sizeTick,jdbcType=INTEGER},
+        min_volume = #{minVolume,jdbcType=BIGINT},
+        max_volume = #{maxVolume,jdbcType=BIGINT},
+        min_leverage = #{minLeverage,jdbcType=INTEGER},
+        max_leverage = #{maxLeverage,jdbcType=INTEGER},
+        market_ratio_buy = #{marketRatioBuy,jdbcType=DECIMAL},
+        market_ratio_sell = #{marketRatioSell,jdbcType=DECIMAL},
+        limit_ratio = #{limitRatio,jdbcType=DECIMAL},
+        ratio = #{ratio,jdbcType=DECIMAL},
+        imgs = #{imgs,jdbcType=VARCHAR},
+        tolerate_volume = #{tolerateVolume,jdbcType=BIGINT},
+        buy_volume = #{buyVolume,jdbcType=BIGINT},
+        sell_volume = #{sellVolume,jdbcType=BIGINT},
+        funding_time = #{fundingTime,jdbcType=INTEGER},
+        sort = #{sort,jdbcType=INTEGER},
+        open_time = #{openTime,jdbcType=TIMESTAMP},
+        is_open = #{isOpen,jdbcType=INTEGER},
+        trade_type = #{tradeType,jdbcType=INTEGER},
+        status = #{status,jdbcType=TINYINT},
+        is_delisting = #{isDelisting,jdbcType=INTEGER},
+        delisting_time = #{delistingTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, tenant_id, symbol, base_currency, quote_currency, settlement_currency,
+        contract_size, price_tick, size_tick, min_volume, max_volume, min_leverage, max_leverage,
+        market_ratio_buy, market_ratio_sell, limit_ratio, ratio, imgs, tolerate_volume, buy_volume,
+        sell_volume, funding_time, sort, open_time, is_open, trade_type, status, is_delisting,
+        delisting_time, create_time, update_time
+        from swap_front_config
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <!--    status状态：1=使用，0=禁用  -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, tenant_id, symbol, base_currency, quote_currency, settlement_currency,
+        contract_size, price_tick, size_tick, min_volume, max_volume, min_leverage, max_leverage,
+        market_ratio_buy, market_ratio_sell, limit_ratio, ratio, imgs, tolerate_volume, buy_volume,
+        sell_volume, funding_time, sort, open_time, is_open, trade_type, status, is_delisting,
+        delisting_time, create_time, update_time
+        from swap_front_config
+        where status=1
+    </select>
+    <select id="selectBySymbol" resultMap="BaseResultMap">
+        select * from swap_front_config
+        where symbol = #{symbol,jdbcType=VARCHAR}
+        and status=1
+    </select>
+    <select id="selectMaxLeverageSymbolList" resultMap="BaseResultMap">
+        select * from swap_front_config
+        where max_leverage = (select max(max_leverage) from swap_front_config)
+    </select>
+    <select id="selectSwapConfig" resultMap="BaseResultMap">
+        select * from swap_front_config s
+        LEFT JOIN currency c ON c.currency = s.base_currency
+        where s.`status` = 1
+    </select>
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SwapFrontOrderPlanEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SwapFrontOrderPlanEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="stop_order_id" jdbcType="BIGINT" property="stopOrderId"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="trigger_type" jdbcType="INTEGER" property="triggerType"/>
+        <result column="trigger_price" jdbcType="DECIMAL" property="triggerPrice"/>
+        <result column="order_price" jdbcType="DECIMAL" property="orderPrice"/>
+        <result column="order_price_type" jdbcType="INTEGER" property="orderPriceType"/>
+        <result column="volume" jdbcType="BIGINT" property="volume"/>
+        <result column="trade_type" jdbcType="INTEGER" property="tradeType"/>
+        <result column="mode" jdbcType="INTEGER" property="mode"/>
+        <result column="leverage" jdbcType="INTEGER" property="leverage"/>
+        <result column="fail_reason" jdbcType="VARCHAR" property="failReason"/>
+        <result column="source" jdbcType="TINYINT" property="source"/>
+        <result column="source_id" jdbcType="BIGINT" property="sourceId"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="trigger_time" jdbcType="TIMESTAMP" property="triggerTime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from swap_front_order_plan
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.SwapFrontOrderPlanEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into swap_front_order_plan (tenant_id, user_id, order_id,
+        stop_order_id, symbol, trigger_type,
+        trigger_price, order_price, order_price_type,
+        volume, trade_type, mode,
+        leverage, fail_reason, source,
+        source_id, status, create_time,
+        trigger_time)
+        values (#{tenantId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT},
+        #{stopOrderId,jdbcType=BIGINT}, #{symbol,jdbcType=VARCHAR}, #{triggerType,jdbcType=INTEGER},
+        #{triggerPrice,jdbcType=DECIMAL}, #{orderPrice,jdbcType=DECIMAL}, #{orderPriceType,jdbcType=INTEGER},
+        #{volume,jdbcType=BIGINT}, #{tradeType,jdbcType=INTEGER}, #{mode,jdbcType=INTEGER},
+        #{leverage,jdbcType=INTEGER}, #{failReason,jdbcType=VARCHAR}, #{source,jdbcType=TINYINT},
+        #{sourceId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{triggerTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SwapFrontOrderPlanEntity">
+        update swap_front_order_plan
+        set tenant_id = #{tenantId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+        order_id = #{orderId,jdbcType=BIGINT},
+        stop_order_id = #{stopOrderId,jdbcType=BIGINT},
+        symbol = #{symbol,jdbcType=VARCHAR},
+        trigger_type = #{triggerType,jdbcType=INTEGER},
+        trigger_price = #{triggerPrice,jdbcType=DECIMAL},
+        order_price = #{orderPrice,jdbcType=DECIMAL},
+        order_price_type = #{orderPriceType,jdbcType=INTEGER},
+        volume = #{volume,jdbcType=BIGINT},
+        trade_type = #{tradeType,jdbcType=INTEGER},
+        mode = #{mode,jdbcType=INTEGER},
+        leverage = #{leverage,jdbcType=INTEGER},
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+        source = #{source,jdbcType=TINYINT},
+        source_id = #{sourceId,jdbcType=BIGINT},
+        status = #{status,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        trigger_time = #{triggerTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_id, stop_order_id, symbol, trigger_type, trigger_price,
+        order_price, order_price_type, volume, trade_type, mode, leverage, fail_reason, source,
+        source_id, status, create_time, trigger_time
+        from swap_front_order_plan
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_id, stop_order_id, symbol, trigger_type, trigger_price,
+        order_price, order_price_type, volume, trade_type, mode, leverage, fail_reason, source,
+        source_id, status, create_time, trigger_time
+        from swap_front_order_plan
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and status = 1
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and stop_order_id = #{orderId,jdbcType=BIGINT}
+    </select>
+    <select id="selectBySymbol" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and symbol = #{symbol,jdbcType=VARCHAR}
+        and status = 1
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectStopProfitLossOrders" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and stop_order_id is not null
+        and status = 1
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectHistoryPlanOrders" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and status != 1
+        ORDER BY create_time DESC
+    </select>
+    <select id="selectPeriodPlanOrders" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and status = 1
+        and create_time >= #{createTime,jdbcType=TIMESTAMP}
+        ORDER BY create_time DESC
+    </select>
+    <!--    status计划委托状态1=等待委托，2=已委托，3=委托失败，4=已撤销,5=委托中 -->
+    <select id="selectPeriodHistoryPlanOrders" resultMap="BaseResultMap">
+        SELECT * FROM swap_front_order_plan
+        WHERE user_id = #{userId,jdbcType=BIGINT}
+        and status != 1
+        and create_time >= #{createTime,jdbcType=TIMESTAMP}
+        ORDER BY create_time DESC
+    </select>
+</mapper>

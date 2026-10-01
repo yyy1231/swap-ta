@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.novax.mapper.SwapFrontFinanceRecordEntityMapper">
+    <resultMap id="BaseResultMap" type="com.novax.entity.mysql.SwapFrontFinanceRecordEntity">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="tenant_id" jdbcType="BIGINT" property="tenantId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="order_id" jdbcType="BIGINT" property="orderId"/>
+        <result column="symbol" jdbcType="VARCHAR" property="symbol"/>
+        <result column="currency" jdbcType="VARCHAR" property="currency"/>
+        <result column="operation" jdbcType="INTEGER" property="operation"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="volume" jdbcType="BIGINT" property="volume"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from swap_front_finance_record
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.novax.entity.mysql.SwapFrontFinanceRecordEntity">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into swap_front_finance_record (tenant_id, user_id, order_id,
+        symbol, currency, operation,
+        price, volume, amount,
+        status, create_time)
+        values (#{tenantId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT},
+        #{symbol,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{operation,jdbcType=INTEGER},
+        #{price,jdbcType=DECIMAL}, #{volume,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL},
+        #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.novax.entity.mysql.SwapFrontFinanceRecordEntity">
+        update swap_front_finance_record
+        set tenant_id = #{tenantId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+        order_id = #{orderId,jdbcType=BIGINT},
+        symbol = #{symbol,jdbcType=VARCHAR},
+        currency = #{currency,jdbcType=VARCHAR},
+        operation = #{operation,jdbcType=INTEGER},
+        price = #{price,jdbcType=DECIMAL},
+        volume = #{volume,jdbcType=BIGINT},
+        amount = #{amount,jdbcType=DECIMAL},
+        status = #{status,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_id, symbol, currency, operation, price, volume,
+        amount, status, create_time
+        from swap_front_finance_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id, tenant_id, user_id, order_id, symbol, currency, operation, price, volume,
+        amount, status, create_time
+        from swap_front_finance_record
+    </select>
+    <!--  status状态:0=作废,1=正常  -->
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        select * from swap_front_finance_record
+        where user_id = #{userId,jdbcType=BIGINT}
+        and order_id = #{orderId,jdbcType=BIGINT}
+        and status = 1
+    </select>
+    <select id="selectPeriodRecords" resultMap="BaseResultMap">
+        select * from swap_front_finance_record
+        where user_id = #{userId,jdbcType=BIGINT}
+        and create_time >= #{createTime,jdbcType=TIMESTAMP}
+        and operation > 2
+        and status = 1
+    </select>
+    <select id="selectLiquidationRecord" resultMap="BaseResultMap">
+        select * from swap_front_finance_record
+        where user_id = #{userId,jdbcType=BIGINT}
+        and order_id = #{orderId,jdbcType=BIGINT}
+        and operation = 12
+        and status = 1
+    </select>
+</mapper>
